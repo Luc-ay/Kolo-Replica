@@ -5,7 +5,13 @@ import asyncWrapper from '../middleware/asyncWrapper.js'
 const router = express.Router()
 
 // Routes
-router.post('/register', registerAuth)
-router.post('/login', loginAuth)
+// Google OAuth Login/Register
+router.get('/google', googleAuth)
+
+// Google OAuth Callback
+router.get('/google/callback', googleCallback)
+
+// Logout Route
+router.get('/logout', logout)
 
 export default router

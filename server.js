@@ -7,13 +7,14 @@ import dotenv from 'dotenv'
 import helmet from 'helmet'
 import compression from 'compression'
 import rateLimit from 'express-rate-limit'
+import connectDB from './src/config/db.js'
 import authRoutes from './src/routes/auth.route.js'
 import notFound from './src/middleware/notFound.middleware.js'
 import errorHandler from './src/middleware/errorHandler.middleware.js'
 dotenv.config()
 
 const app = express()
-
+connectDB()
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
   limit: 100,
