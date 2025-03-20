@@ -9,6 +9,7 @@ import compression from 'compression'
 import rateLimit from 'express-rate-limit'
 import connectDB from './src/config/db.js'
 import authRoutes from './src/routes/auth.route.js'
+import userRoutes from './src/routes/user.route.js'
 import notFound from './src/middleware/notFound.middleware.js'
 import errorHandler from './src/middleware/errorHandler.middleware.js'
 dotenv.config()
@@ -35,6 +36,7 @@ app.use(
     saveUninitialized: true,
   })
 )
+app.use(compression())
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -43,6 +45,7 @@ app.get('/', (req, res) => {
   res.send(`We are online`)
 })
 app.use('/oauth', authRoutes)
+app.use('/app/account', userRoutes)
 
 // Error Handlers
 app.use(notFound)

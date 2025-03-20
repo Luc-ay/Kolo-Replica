@@ -1,7 +1,9 @@
 import User from '../model/auth.model.js'
 import passport from 'passport'
+import jwt from 'jsonwebtoken'
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import dotenv from 'dotenv'
+dotenv.config()
 
 passport.use(
   new GoogleStrategy(
@@ -17,7 +19,8 @@ passport.use(
         if (!user) {
           user = new User({
             googleId: profile.id,
-            name: profile.displayName,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName,
             email: profile.emails[0].value,
             avatar: profile.photos[0].value,
           })
@@ -25,7 +28,12 @@ passport.use(
           await user.save()
         }
 
-        return done(null, user)
+        // Generate JWT Token
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+          expiresIn: '2h',
+        })
+
+        return done(null, { user, token })
       } catch (error) {
         return done(error, null)
       }
