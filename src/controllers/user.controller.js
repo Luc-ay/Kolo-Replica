@@ -48,3 +48,10 @@ export const phoneVerification = async (req, res) => {
       .json({ message: 'Error processing request', error: error.message })
   }
 }
+
+export const editProfile = async (req, re) => {
+  const { street, city, state, landMark, country } = req.body
+  if (!street || !city || !state || !country) {
+    throw new Error('All Fields are Required')
+  }
+}
